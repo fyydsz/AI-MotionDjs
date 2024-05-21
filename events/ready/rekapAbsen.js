@@ -32,16 +32,16 @@ module.exports = {
 
 				let user = client.users.cache.get(x.userId);
 				user = user ? user.tag : "Invalid user (Left)";
-				return `* **${user}** pada jam ${x.absent.time}`
-			}).join("\n")
+				return `* **${user}** pada jam ${x.absent.time}\n`
+			})
 
 			let berhalangan = data.data.map((x, i) => {
 				if (x.absent.type === "hadir") return;
 				
 				let user = client.users.cache.get(x.userId);
 				user = user ? user.tag : "Invalid user (left)";
-				return `* **${user}** berhalangan, dengan alasan ${x.absent.alasan}`;
-			}).join("\n")
+				return `* **${user}** berhalangan, dengan alasan ${x.absent.alasan}\n`;
+			})
 
 			let channel = client.channels.cache.get("1242020517574217793")
 			channel.send(`List yang **__hadir__** di tanggal **${date}**:\n${hadir}\n\nList yang berhalangan:${berhalangan}`)
