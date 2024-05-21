@@ -24,8 +24,7 @@ module.exports = {
 		client.user.setPresence({ activities: [{ name: `Welcome to the Project!` }], status: "idle" });
 		
 		schedule.scheduleJob(rule, async function(){
-			const timezone = momentTimezone().tz("Asia/Jakarta")
-			const date = moment(timezone).format("L");
+			const date = momentTimezone().tz("Asia/Jakarta").format("LT")
 			const data = await Schema.findOne({ date: `${date}` });
 
 			let hadir = data.data.map((x, i) => {
