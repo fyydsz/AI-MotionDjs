@@ -25,7 +25,7 @@ module.exports = {
 		
 		schedule.scheduleJob(rule, async function(){
 			const timezone = momentTimezone().tz("Asia/Jakarta")
-			const date = moment().format("L");
+			const date = moment(timezone).format("L");
 			const data = await Schema.findOne({ date: `${date}` });
 
 			let hadir = data.data.map((x, i) => {
