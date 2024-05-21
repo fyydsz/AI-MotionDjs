@@ -10,6 +10,8 @@ const Schema = require("../../database/schema/dataAbsen")
 const moment = require("moment")
 moment.locale("id")
 
+const momentTimezone = require("moment-timezone")
+
 const rule = new schedule.RecurrenceRule();
 rule.hour = 21;
 rule.minute = 0;
@@ -22,6 +24,7 @@ module.exports = {
 		client.user.setPresence({ activities: [{ name: `Welcome to the Project!` }], status: "idle" });
 		
 		schedule.scheduleJob(rule, async function(){
+			const timezone = momentTimezone().tz("Asia/Jakarta")
 			const date = moment().format("L");
 			const data = await Schema.findOne({ date: `${date}` });
 
