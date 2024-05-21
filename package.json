@@ -1,0 +1,23 @@
+{
+	"name": "project-ai-bercerita",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon index.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"discord.js": "^14.15.2",
+		"express": "^4.19.2",
+		"moment": "^2.30.1",
+		"mongoose": "^8.3.4",
+		"node-schedule": "^2.1.1",
+		"nodemon": "^3.1.0",
+		"util": "^0.12.5",
+		"winston": "^3.13.0",
+		"winston-daily-rotate-file": "^5.0.0"
+	}
+}
