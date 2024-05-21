@@ -14,47 +14,46 @@ const {
 } = require("discord.js");
 
 const Schema = require("../../database/schema/dataAbsen");
-const moment = require("moment")
-moment.locale("id")
+const moment = require("moment-timezone");
 
 module.exports = {
 	name: "interactionCreate",
 
 	async execute(interaction) {
-        if (!interaction.isButton()) return
+		if (!interaction.isButton()) return;
 
-        if (interaction.customId === "absen") {
-            const date = moment().format("L");
+		if (interaction.customId === "absen") {
+
+			const date = moment().tz("Asia/Jakarta").format("L");
 			const data = await Schema.findOne({ date: `${date}` });
-            const userId = data.data.map((x) => {
-                return x.userId;
+            
+            let userid = data.data.map(x => {
+                return `${x.userId}`
             })
-            
-            if (userId.includes(interaction.user.id)) return interaction.reply({ content: "Kamu sudah absen, silahkan absen kembali besok", ephemeral: true })
 
-            const modal = new ModalBuilder()
-                .setCustomId("absenModal")
-                .setTitle("Absensi")
-            
-            const keterangan = new TextInputBuilder()
-                .setCustomId("inputKeterangan")
-                .setLabel("Keterangan")
-                .setPlaceholder("Hadir / Berhalangan")
-                .setStyle(TextInputStyle.Short)
-                .setRequired(true);
-            
-            const alasan = new TextInputBuilder()
-                .setCustomId("inputAlasan")
-                .setLabel("Alasan")
-                .setPlaceholder("Tuliskan keterangan jika berhalangan!")
-                .setStyle(TextInputStyle.Paragraph)
-                .setRequired(false);
-            
-            const first = new ActionRowBuilder().addComponents(keterangan);
-            const second = new ActionRowBuilder().addComponents(alasan)
-            
-            modal.addComponents(first, second);
-            await interaction.showModal(modal);
-        }
-    }
-}
+            if(userid.includes(interaction.user.id)) return
+
+			const modal = new ModalBuilder().setCustomId("absenModal").setTitle("Absensi");
+
+			const keterangan = new TextInputBuilder()
+				.setCustomId("inputKeterangan")
+				.setLabel("Keterangan")
+				.setPlaceholder("Hadir / Berhalangan")
+				.setStyle(TextInputStyle.Short)
+				.setRequired(true);
+
+			const alasan = new TextInputBuilder()
+				.setCustomId("inputAlasan")
+				.setLabel("Alasan")
+				.setPlaceholder("Tuliskan keterangan jika berhalangan!")
+				.setStyle(TextInputStyle.Paragraph)
+				.setRequired(false);
+
+			const first = new ActionRowBuilder().addComponents(keterangan);
+			const second = new ActionRowBuilder().addComponents(alasan);
+
+			modal.addComponents(first, second);
+			interaction.showModal(modal);
+		}
+	},
+};
