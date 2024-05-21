@@ -21,7 +21,7 @@ module.exports = {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
 		client.user.setPresence({ activities: [{ name: `Welcome to the Project!` }], status: "idle" });
 		
-		//schedule.scheduleJob(rule, async function(){
+		schedule.scheduleJob(rule, async function(){
 			const date = moment().format("L");
 			const data = await Schema.findOne({ date: `${date}` });
 
@@ -43,6 +43,6 @@ module.exports = {
 
 			let channel = client.channels.cache.get("1242020517574217793")
 			channel.send(`List yang **__hadir__** di tanggal **${date}**:\n${hadir}\n\nList yang berhalangan:${berhalangan}`)
-		//})
+		})
 	},
 };
