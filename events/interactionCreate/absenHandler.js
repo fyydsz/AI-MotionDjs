@@ -52,7 +52,8 @@ module.exports = {
 					return `${x.userId}`;
 				});
 
-				if (userid.includes(interaction.user.id)) return;
+				if (userid.includes(interaction.user.id)) return interaction.reply({  content: "Anda sudah absen!", ephemeral: true });
+
 				const modal = new ModalBuilder().setCustomId("absenModal").setTitle("Absensi");
 
 				const keterangan = new TextInputBuilder()
