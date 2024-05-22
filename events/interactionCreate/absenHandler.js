@@ -23,37 +23,58 @@ module.exports = {
 		if (!interaction.isButton()) return;
 
 		if (interaction.customId === "absen") {
-
 			const date = moment().tz("Asia/Jakarta").format("L");
 			const data = await Schema.findOne({ date: `${date}` });
-            
-            let userid = data.data.map(x => {
-                return `${x.userId}`
-            })
+			if (!data) {
+				const modal = new ModalBuilder().setCustomId("absenModal").setTitle("Absensi");
 
-            if(userid.includes(interaction.user.id)) return
+				const keterangan = new TextInputBuilder()
+					.setCustomId("inputKeterangan")
+					.setLabel("Keterangan")
+					.setPlaceholder("Hadir / Berhalangan")
+					.setStyle(TextInputStyle.Short)
+					.setRequired(true);
 
-			const modal = new ModalBuilder().setCustomId("absenModal").setTitle("Absensi");
+				const alasan = new TextInputBuilder()
+					.setCustomId("inputAlasan")
+					.setLabel("Alasan")
+					.setPlaceholder("Tuliskan keterangan jika berhalangan!")
+					.setStyle(TextInputStyle.Paragraph)
+					.setRequired(false);
 
-			const keterangan = new TextInputBuilder()
-				.setCustomId("inputKeterangan")
-				.setLabel("Keterangan")
-				.setPlaceholder("Hadir / Berhalangan")
-				.setStyle(TextInputStyle.Short)
-				.setRequired(true);
+				const first = new ActionRowBuilder().addComponents(keterangan);
+				const second = new ActionRowBuilder().addComponents(alasan);
 
-			const alasan = new TextInputBuilder()
-				.setCustomId("inputAlasan")
-				.setLabel("Alasan")
-				.setPlaceholder("Tuliskan keterangan jika berhalangan!")
-				.setStyle(TextInputStyle.Paragraph)
-				.setRequired(false);
+				modal.addComponents(first, second);
+				interaction.showModal(modal);
+			} else if (data) {
+				let userid = data.data.map((x) => {
+					return `${x.userId}`;
+				});
 
-			const first = new ActionRowBuilder().addComponents(keterangan);
-			const second = new ActionRowBuilder().addComponents(alasan);
+				if (userid.includes(interaction.user.id)) return;
+				const modal = new ModalBuilder().setCustomId("absenModal").setTitle("Absensi");
 
-			modal.addComponents(first, second);
-			interaction.showModal(modal);
+				const keterangan = new TextInputBuilder()
+					.setCustomId("inputKeterangan")
+					.setLabel("Keterangan")
+					.setPlaceholder("Hadir / Berhalangan")
+					.setStyle(TextInputStyle.Short)
+					.setRequired(true);
+
+				const alasan = new TextInputBuilder()
+					.setCustomId("inputAlasan")
+					.setLabel("Alasan")
+					.setPlaceholder("Tuliskan keterangan jika berhalangan!")
+					.setStyle(TextInputStyle.Paragraph)
+					.setRequired(false);
+
+				const first = new ActionRowBuilder().addComponents(keterangan);
+				const second = new ActionRowBuilder().addComponents(alasan);
+
+				modal.addComponents(first, second);
+				interaction.showModal(modal);
+			}
 		}
 	},
 };
